@@ -10,12 +10,12 @@ const createUser = asyncHandler(async (req, res) => {
 	const newUser = new User({ username, email, password: hashedPassword });
 
 	if (!username || !email || !password) {
+		res.status(400);
 		throw new Error("All field are required!");
 	}
 
-	if (existingUser) {
-		throw new Error(`user with ${email} already exists`);
-	}
+	if (existingUser)
+		res.status(409).send(`user with ${email} already exist.`);
 
 	try {
 		await newUser.save();
