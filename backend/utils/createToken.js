@@ -6,8 +6,8 @@ function createToken(res, userID) {
 	});
 
 	res.cookie("jwt", token, {
-		maxAge: "30d",
-		sameSite: true,
+		maxAge: 60 * 60 * 24 * 30 * 1000,
+		sameSite: "strict",
 		secure: process.env.NODE_ENV != "development",
 		httpOnly: true,
 	});
