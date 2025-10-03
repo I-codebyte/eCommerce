@@ -12,7 +12,7 @@ function createToken(res, userID) {
 		httpOnly: true,
 	});
 
-	return token;
+	// return token;
 }
 
 export default createToken;
