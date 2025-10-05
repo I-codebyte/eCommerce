@@ -4,6 +4,8 @@ import {
 	loginUser,
 	logoutUser,
 	getAllUsers,
+	getCurrentUserProfile,
+	updateUser,
 } from "../controllers/userController.js";
 import {
 	authorizedUser,
@@ -12,9 +14,13 @@ import {
 
 const router = express.Router();
 
-router.route("/").post(createUser);
+router.route("/")
+	.post(createUser)
+	.get(authenticatedUser, authorizedUser, getAllUsers);
 router.post("/auth", loginUser);
 router.post("/logout", logoutUser);
-router.get("/", authenticatedUser, authorizedUser, getAllUsers);
+router.route("/profile")
+	.get(authenticatedUser, getCurrentUserProfile)
+	.put(authenticatedUser, updateUser);
 
 export default router;

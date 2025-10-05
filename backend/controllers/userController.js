@@ -60,4 +60,41 @@ const getAllUsers = asyncHandler(async (req, res) => {
 	res.status(200).send(allUsers);
 });
 
-export { createUser, loginUser, logoutUser, getAllUsers };
+const getCurrentUserProfile = asyncHandler(async (req, res) => {
+	const user = await User.findById(req.user._id);
+
+	if (user) {
+		res.status(200).send(user);
+	} else {
+		res.status(403);
+		throw new Error("login to access your profile...🙄🙄");
+	}
+});
+
+const updateUser = asyncHandler(async (req, res) => {
+	const user = req.user;
+
+	if (user) {
+		user.username = req.body.username || user.username;
+		user.email = req.body.email || user.email;
+
+		if (req.body.password) {
+			const salt = bcrypt.genSalt(10);
+			user.password =
+				bcrypt.hash(req.body.password, salt) ||
+				user.password;
+		}
+
+		await user.save();
+		res.status(200).send(user);
+	}
+});
+
+export {
+	createUser,
+	loginUser,
+	logoutUser,
+	getAllUsers,
+	getCurrentUserProfile,
+	updateUser,
+};
